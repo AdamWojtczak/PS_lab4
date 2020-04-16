@@ -11,7 +11,7 @@ public class Server {
     static int port;
 
     private static int getPort() throws InputMismatchException {
-        System.out.println("Podaj nr portu do połączenia: ");
+        System.out.println("Insert port number: ");
         int port = scanner.nextInt();
         scanner.nextLine();
         return port;
@@ -24,14 +24,14 @@ public class Server {
             DatagramSocket datagramSocket = new DatagramSocket(port);
             while(!global_flag_end) {
                 byte[] arr = new byte[1024];
-                DatagramPacket packet = new DatagramPacket(arr, arr.length);
-                datagramSocket.receive(packet);
-                InetAddress address = packet.getAddress();
-                int port2 = packet.getPort();
-                packet = new DatagramPacket(arr, arr.length, address, port2);
-                String received = new String(packet.getData(), 0, packet.getLength());
-                System.out.println("Server otrzymał: " + received);
-                datagramSocket.send(packet);
+                DatagramPacket datagramPacket = new DatagramPacket(arr, arr.length);
+                datagramSocket.receive(datagramPacket);
+                InetAddress address = datagramPacket.getAddress();
+                int port2 = datagramPacket.getPort();
+                datagramPacket = new DatagramPacket(arr, arr.length, address, port2);
+                String received = new String(datagramPacket.getData(), 0, datagramPacket.getLength());
+                System.out.println("Server received: " + received);
+                datagramSocket.send(datagramPacket);
             }
             datagramSocket.close();
         } catch (SocketException e) {
